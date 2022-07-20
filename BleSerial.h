@@ -3,7 +3,7 @@
 
 #include <BLEDevice.h>
 #include <BLEUtils.h>
-#include <BleServer.h>
+#include <BLEServer.h>
 #include <BLE2902.h>
 #include "ByteRingBuffer.h"
 
