@@ -7,12 +7,9 @@
 #include <BLE2902.h>
 #include "ByteRingBuffer.h"
 
-//Connection status LED
-#define ENABLE_LED 0
-#define BLUE_LED 13
 
-#define BLE_BUFFER_SIZE 500 //must be greater than MTU, less than ESP_GATT_MAX_ATTR_LEN
-
+#define BLE_BUFFER_SIZE ESP_GATT_MAX_ATTR_LEN //must be greater than MTU, less than ESP_GATT_MAX_ATTR_LEN
+#define MIN_MTU 50
 
 
 class BleSerial : public BLECharacteristicCallbacks, public BLEServerCallbacks, public Stream
@@ -20,7 +17,7 @@ class BleSerial : public BLECharacteristicCallbacks, public BLEServerCallbacks, 
 public:
 	BleSerial();
 
-	void begin(const char *name);
+	void begin(const char *name, bool enable_led = false, int led_pin = 13);
 	void end();
 	void onWrite(BLECharacteristic *pCharacteristic);
 	int available();
@@ -48,6 +45,9 @@ public:
 	BLECharacteristic *TxCharacteristic;
 	BLECharacteristic *RxCharacteristic;
 
+	bool enableLed = false;
+	int ledPin = 13;
+
 private:
 	BleSerial(BleSerial const &other) = delete;		 // disable copy constructor
 	void operator=(BleSerial const &other) = delete; // disable assign constructor
@@ -63,7 +63,10 @@ private:
 	void SetupSerialService();
 	bool bleConnected;
 
+	uint16_t peerMTU;
+	uint16_t maxTransferSize = BLE_BUFFER_SIZE;
 
+	bool checkMTU();
 	/*
 	Bluetooth LE GATT UUIDs for the Nordic UART profile
 	Change UUID here if required
@@ -71,4 +74,6 @@ private:
 	const char *BLE_SERIAL_SERVICE_UUID = "6e400001-b5a3-f393-e0a9-e50e24dcca9e";
 	const char *BLE_RX_UUID = "6e400002-b5a3-f393-e0a9-e50e24dcca9e";
 	const char *BLE_TX_UUID = "6e400003-b5a3-f393-e0a9-e50e24dcca9e";
+
+	bool started = false;
 };

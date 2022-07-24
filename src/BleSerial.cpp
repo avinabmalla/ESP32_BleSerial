@@ -9,13 +9,13 @@ bool BleSerial::connected()
 void BleSerial::onConnect(BLEServer *pServer)
 {
 	bleConnected = true;
-	if(ENABLE_LED) digitalWrite(BLUE_LED, HIGH);
+	if(enableLed) digitalWrite(ledPin, HIGH);
 }
 
 void BleSerial::onDisconnect(BLEServer *pServer)
 {
 	bleConnected = false;
-	if(ENABLE_LED) digitalWrite(BLUE_LED, LOW);
+	if(enableLed) digitalWrite(ledPin, LOW);
 	Server->startAdvertising();
 }
 
@@ -74,6 +74,24 @@ size_t BleSerial::write(const uint8_t *buffer, size_t bufferSize)
 	{
 		return 0;
 	}
+
+	if (maxTransferSize < MIN_MTU)
+	{
+		int oldTransferSize = maxTransferSize;
+		peerMTU = Server->getPeerMTU(Server->getConnId()) - 5;
+		maxTransferSize = peerMTU > BLE_BUFFER_SIZE ? BLE_BUFFER_SIZE : peerMTU;
+
+		if (maxTransferSize != oldTransferSize)
+		{
+			ESP_LOGE(TAG, "Max BLE transfer size set to %u", maxTransferSize);
+		}
+	}
+
+	if (maxTransferSize < MIN_MTU){
+		return 0;
+	}
+
+	
 	size_t written = 0;
 	for (int i = 0; i < bufferSize; i++)
 	{
@@ -109,8 +127,14 @@ void BleSerial::flush()
 	TxCharacteristic->notify(true);
 }
 
-void BleSerial::begin(const char *name)
+void BleSerial::begin(const char *name,bool enable_led, int led_pin)
 {
+	enableLed = enable_led;
+	ledPin = led_pin;
+
+	if(enableLed){
+		pinMode(ledPin,OUTPUT);
+	}
 	//characteristic property is what the other device does.
 
 	ConnectedDeviceCount = 0;
