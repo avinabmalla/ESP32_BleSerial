@@ -47,6 +47,9 @@ public:
 
 	bool enableLed = false;
 	int ledPin = 13;
+protected:
+	size_t transmitBufferLength;
+	bool bleConnected;
 
 private:
 	BleSerial(BleSerial const &other) = delete;		 // disable copy constructor
@@ -56,12 +59,10 @@ private:
 	size_t numAvailableLines;
 
 	unsigned long long lastFlushTime;
-	size_t transmitBufferLength;
 	uint8_t transmitBuffer[BLE_BUFFER_SIZE];
 
 	int ConnectedDeviceCount;
 	void SetupSerialService();
-	bool bleConnected;
 
 	uint16_t peerMTU;
 	uint16_t maxTransferSize = BLE_BUFFER_SIZE;
