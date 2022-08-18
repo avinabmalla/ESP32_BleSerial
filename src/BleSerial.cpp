@@ -83,7 +83,7 @@ size_t BleSerial::write(const uint8_t *buffer, size_t bufferSize)
 
 		if (maxTransferSize != oldTransferSize)
 		{
-			ESP_LOGE(TAG, "Max BLE transfer size set to %u", maxTransferSize);
+			log_e("Max BLE transfer size set to %u", maxTransferSize);
 		}
 	}
 
