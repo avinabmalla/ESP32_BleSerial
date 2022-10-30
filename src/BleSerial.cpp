@@ -1,5 +1,6 @@
 #include "BleSerial.h"
 using namespace std;
+static const char *TAG = "BleSerial";
 
 bool BleSerial::connected()
 {
