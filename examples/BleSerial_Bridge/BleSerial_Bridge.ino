@@ -17,8 +17,6 @@
 #include "soc/rtc_wdt.h"
 
 const int BUFFER_SIZE = 8192;
-const int RX_PIN = 10;
-const int TX_PIN = 11;
 
 BleSerial SerialBT;
 
