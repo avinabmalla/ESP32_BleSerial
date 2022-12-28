@@ -1,3 +1,12 @@
+/**
+* Bluetooth LE Serial Simple Example
+* 
+* Outputs the text "Hello!" to the Bluetooth LE Serial port every second.
+*
+* Avinab Malla
+* 24 July 2022
+**/
+
 #include <BleSerial.h>
 
 BleSerial ble;
