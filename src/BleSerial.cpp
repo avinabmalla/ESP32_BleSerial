@@ -9,13 +9,15 @@ bool BleSerial::connected()
 void BleSerial::onConnect(BLEServer *pServer)
 {
 	bleConnected = true;
-	if(enableLed) digitalWrite(ledPin, HIGH);
+	if (enableLed)
+		digitalWrite(ledPin, HIGH);
 }
 
 void BleSerial::onDisconnect(BLEServer *pServer)
 {
 	bleConnected = false;
-	if(enableLed) digitalWrite(ledPin, LOW);
+	if (enableLed)
+		digitalWrite(ledPin, LOW);
 	Server->startAdvertising();
 }
 
@@ -87,11 +89,11 @@ size_t BleSerial::write(const uint8_t *buffer, size_t bufferSize)
 		}
 	}
 
-	if (maxTransferSize < MIN_MTU){
+	if (maxTransferSize < MIN_MTU)
+	{
 		return 0;
 	}
 
-	
 	size_t written = 0;
 	for (int i = 0; i < bufferSize; i++)
 	{
@@ -109,7 +111,7 @@ size_t BleSerial::write(uint8_t byte)
 	}
 	this->transmitBuffer[this->transmitBufferLength] = byte;
 	this->transmitBufferLength++;
-	if (this->transmitBufferLength == sizeof(this->transmitBuffer))
+	if (this->transmitBufferLength == maxTransferSize)
 	{
 		flush();
 	}
@@ -127,19 +129,18 @@ void BleSerial::flush()
 	TxCharacteristic->notify(true);
 }
 
-void BleSerial::begin(const char *name,bool enable_led, int led_pin)
+void BleSerial::begin(const char *name, bool enable_led, int led_pin)
 {
 	enableLed = enable_led;
 	ledPin = led_pin;
 
-	if(enableLed){
-		pinMode(ledPin,OUTPUT);
+	if (enableLed)
+	{
+		pinMode(ledPin, OUTPUT);
 	}
-	//characteristic property is what the other device does.
 
 	ConnectedDeviceCount = 0;
 	BLEDevice::init(name);
-	//BLEDevice::setEncryptionLevel(ESP_BLE_SEC_ENCRYPT);
 
 	Server = BLEDevice::createServer();
 	Server->setCallbacks(this);
@@ -149,16 +150,9 @@ void BleSerial::begin(const char *name,bool enable_led, int led_pin)
 	pAdvertising = BLEDevice::getAdvertising();
 	pAdvertising->addServiceUUID(BLE_SERIAL_SERVICE_UUID);
 	pAdvertising->setScanResponse(true);
-	pAdvertising->setMinPreferred(0x06); // functions that help with iPhone connections issue
+	pAdvertising->setMinPreferred(0x06);
 	pAdvertising->setMinPreferred(0x12);
 	pAdvertising->start();
-
-	//pSecurity = new BLESecurity();
-
-	//Set static pin
-	//uint32_t passkey = 123456;
-	//esp_ble_gap_set_security_param(ESP_BLE_SM_SET_STATIC_PASSKEY, &passkey, sizeof(uint32_t));
-	//pSecurity->setCapability(ESP_IO_CAP_OUT);
 }
 
 void BleSerial::end()
@@ -172,16 +166,15 @@ void BleSerial::onWrite(BLECharacteristic *pCharacteristic)
 	{
 		std::string value = pCharacteristic->getValue();
 
-		if (value.length() > 0)
-		{
-			for (int i = 0; i < value.length(); i++)
-				receiveBuffer.add(value[i]);
-		}
+		for (int i = 0; i < value.length(); i++)
+			receiveBuffer.add(value[i]);
 	}
 }
 
 void BleSerial::SetupSerialService()
 {
+	// characteristic property is what the other device does.
+
 	SerialService = Server->createService(BLE_SERIAL_SERVICE_UUID);
 
 	RxCharacteristic = SerialService->createCharacteristic(

@@ -10,7 +10,7 @@
 
 #define BLE_BUFFER_SIZE ESP_GATT_MAX_ATTR_LEN //must be greater than MTU, less than ESP_GATT_MAX_ATTR_LEN
 #define MIN_MTU 50
-
+#define RX_BUFFER_SIZE 4096
 
 class BleSerial : public BLECharacteristicCallbacks, public BLEServerCallbacks, public Stream
 {
@@ -55,7 +55,7 @@ private:
 	BleSerial(BleSerial const &other) = delete;		 // disable copy constructor
 	void operator=(BleSerial const &other) = delete; // disable assign constructor
 
-	ByteRingBuffer<BLE_BUFFER_SIZE> receiveBuffer;
+	ByteRingBuffer<RX_BUFFER_SIZE> receiveBuffer;
 	size_t numAvailableLines;
 
 	unsigned long long lastFlushTime;
