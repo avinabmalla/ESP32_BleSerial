@@ -49,7 +49,7 @@ void ReadSerialTask(void *e) {
       auto count = Serial.readBytes(serialReadBuffer, BUFFER_SIZE);
       SerialBT.write(serialReadBuffer, count);
     }
-    yield();
+    delay(20);
   }
 }
 
@@ -60,7 +60,7 @@ void ReadBtTask(void *e) {
       auto count = SerialBT.readBytes(bleReadBuffer, BUFFER_SIZE);
       Serial.write(bleReadBuffer, count);
     }
-    yield();
+    delay(20);
   }
 }
 
