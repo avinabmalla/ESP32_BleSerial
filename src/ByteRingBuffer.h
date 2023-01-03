@@ -1,46 +1,69 @@
+// Thread safe ring buffer
 #pragma once
 #include <Arduino.h>
-
 
 template <size_t N>
 class ByteRingBuffer
 {
 private:
-	uint8_t ringBuffer[N];
-	size_t newestIndex = 0;
-	size_t length = 0;
+	uint8_t buffer[N];
+	int head = 0;
+	int tail = 0;
 
 public:
 	void add(uint8_t value)
 	{
-		ringBuffer[newestIndex] = value;
-		newestIndex = (newestIndex + 1) % N;
-		length = min(length + 1, N);
+		buffer[head] = value;
+		head = (head + 1) % N;
+		if (head == tail)
+		{
+			tail = (tail + 1) % N;
+		}
 	}
 	uint8_t pop()
-	{ // pops the oldest value off the ring buffer
-		if (length == 0)
+	{
+		// pops the oldest value off the ring buffer
+		if (head == tail)
 		{
 			return -1;
 		}
-		uint8_t result = ringBuffer[(N + newestIndex - length) % N];
-		length -= 1;
-		return result;
+		else
+		{
+			uint8_t value = buffer[tail];
+			tail = (tail + 1) % N;
+			return value;
+		}
 	}
+
 	void clear()
 	{
-		newestIndex = 0;
-		length = 0;
+		head = 0;
+		tail = 0;
 	}
+
 	uint8_t get(size_t index)
-	{ // this.get(0) is the oldest value, this.get(this.getLength() - 1) is the newest value
-		if (index < 0 || index >= length)
+	{
+		// this.get(0) is the oldest value, this.get(this.getLength() - 1) is the newest value
+		if (index >= this->getLength())
 		{
 			return -1;
 		}
-		return ringBuffer[(N + newestIndex - length + index) % N];
+		else
+		{
+			return buffer[(tail + index) % N];
+		}
 	}
-	size_t getLength() { return length; }
+
+	size_t getLength()
+	{
+		if (head >= tail)
+		{
+			return head - tail;
+		}
+		else
+		{
+			return N - tail + head;
+		}
+	}
+
 };
-
-
