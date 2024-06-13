@@ -164,7 +164,7 @@ void BleSerial::onWrite(BLECharacteristic *pCharacteristic)
 {
 	if (pCharacteristic->getUUID().toString() == BLE_RX_UUID)
 	{
-		std::string value = pCharacteristic->getValue();
+		String value = pCharacteristic->getValue().c_str();
 
 		for (int i = 0; i < value.length(); i++)
 			receiveBuffer.add(value[i]);
