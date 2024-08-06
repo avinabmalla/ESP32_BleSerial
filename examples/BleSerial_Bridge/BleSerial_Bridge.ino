@@ -14,9 +14,11 @@
 #include <esp_attr.h>
 #include <esp_task_wdt.h>
 #include <driver/rtc_io.h>
-#include "soc/rtc_wdt.h"
+#include <esp_mac.h>
 
 const int BUFFER_SIZE = 8192;
+const int STACK_SIZE = 8192;
+
 
 BleSerial SerialBT;
 
@@ -79,12 +81,10 @@ void setup() {
   disableCore1WDT();
   disableLoopWDT();
   esp_task_wdt_delete(NULL);
-  rtc_wdt_protect_off();
-  rtc_wdt_disable();
 
   //Start tasks
-  xTaskCreate(ReadSerialTask, "ReadSerialTask", 10240, NULL, 1, NULL);
-  xTaskCreate(ReadBtTask, "ReadBtTask", 10240, NULL, 1, NULL);
+  xTaskCreate(ReadSerialTask, "ReadSerialTask", STACK_SIZE, NULL, 1, NULL);
+  xTaskCreate(ReadBtTask, "ReadBtTask", STACK_SIZE, NULL, 1, NULL);
 }
 
 void loop() {
