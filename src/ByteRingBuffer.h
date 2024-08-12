@@ -20,7 +20,8 @@ public:
 			tail = (tail + 1) % N;
 		}
 	}
-	uint8_t pop()
+
+	int pop()
 	{
 		// pops the oldest value off the ring buffer
 		if (head == tail)
@@ -41,7 +42,7 @@ public:
 		tail = 0;
 	}
 
-	uint8_t get(size_t index)
+	int get(size_t index)
 	{
 		// this.get(0) is the oldest value, this.get(this.getLength() - 1) is the newest value
 		if (index >= this->getLength())
