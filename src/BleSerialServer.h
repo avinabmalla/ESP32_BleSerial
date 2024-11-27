@@ -12,6 +12,9 @@
 
 #define BLE_BUFFER_SIZE ESP_GATT_MAX_ATTR_LEN // must be greater than MTU, less than ESP_GATT_MAX_ATTR_LEN
 
+typedef void (*BLE_CONNECT_CALLBACK)(bool connected);
+
+
 class BleSerialServer : public BLEServerCallbacks
 {
 
@@ -38,6 +41,8 @@ public:
     BLEServer *Server;
 
     uint16_t getMaxTransferSize();
+    
+    void setConnectCallback(BLE_CONNECT_CALLBACK callback);
 
 private:
     BleSerialServer();
@@ -45,6 +50,7 @@ private:
     void operator=(BleSerialServer const &other) = delete;  // disable assign constructor
 
     BLEAdvertising *pAdvertising;
+    BLE_CONNECT_CALLBACK connectCallback = nullptr;
 
     bool bleConnected;
 

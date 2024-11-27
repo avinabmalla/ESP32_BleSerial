@@ -26,6 +26,11 @@ void BleSerialServer::onConnect(BLEServer *pServer)
     bleConnected = true;
     if (enableLed)
         digitalWrite(ledPin, HIGH);
+
+    if (connectCallback !=nullptr)
+	{
+		connectCallback(bleConnected);
+	}
 }
 
 void BleSerialServer::onDisconnect(BLEServer *pServer)
@@ -34,6 +39,11 @@ void BleSerialServer::onDisconnect(BLEServer *pServer)
     if (enableLed)
         digitalWrite(ledPin, LOW);
     Server->startAdvertising();
+
+    if (connectCallback !=nullptr)
+	{
+		connectCallback(bleConnected);
+	}
 }
 
 void BleSerialServer::startServer(const char *name, int led_pin)
@@ -116,4 +126,9 @@ void BleSerialServer::unregisterSerial(BleSerial *bleSerial)
 void BleSerialServer::unregisterBatteryService()
 {
     hasBatteryService = false;
+}
+
+void BleSerialServer::setConnectCallback(BLE_CONNECT_CALLBACK callback)
+{
+	connectCallback = callback;
 }
