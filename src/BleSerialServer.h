@@ -12,7 +12,6 @@
 
 #define BLE_BUFFER_SIZE ESP_GATT_MAX_ATTR_LEN // must be greater than MTU, less than ESP_GATT_MAX_ATTR_LEN
 
-typedef void (*BLE_CONNECT_CALLBACK)(bool connected);
 
 
 class BleSerialServer : public BLEServerCallbacks
