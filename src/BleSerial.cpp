@@ -108,20 +108,6 @@ size_t BleSerial::write(const uint8_t *buffer, size_t bufferSize)
 }
 
 
-size_t BleSerial::print(const char *str)
-{
-	if (!connected())
-		return 0;
-
-	size_t written = 0;
-	for (size_t i = 0; str[i] != '\0'; i++)
-	{
-		written += this->write(str[i]);
-	}
-	flush();
-	return written;
-}
-
 void BleSerial::flush()
 {
 	if (!connected())
@@ -176,7 +162,6 @@ void BleSerial::setupSerialService()
 BleSerial::BleSerial()
 {
 }
-
 
 void BleSerial::setConnectCallback(BLE_CONNECT_CALLBACK callback)
 {

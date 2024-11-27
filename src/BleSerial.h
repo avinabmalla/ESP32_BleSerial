@@ -1,9 +1,7 @@
 #pragma once
 #include <Arduino.h>
 
-#include <BLEDevice.h>
 #include <BLEUtils.h>
-#include <BLEServer.h>
 #include <BLE2902.h>
 #include "ByteRingBuffer.h"
 
@@ -28,17 +26,16 @@ public:
 
 	bool connected();
 
-	int available();
-	int peek();
+	int available() override;
+	int peek() override;
 
-	int read();
-	size_t readBytes(uint8_t *buffer, size_t bufferSize);
+	int read() override;
+	size_t readBytes(uint8_t* buffer, size_t bufferSize) override;
 
-	size_t write(uint8_t byte);
-	size_t write(const uint8_t *buffer, size_t bufferSize);
+	size_t write(uint8_t byte) override;
+	size_t write(const uint8_t* buffer, size_t bufferSize) override;
 
-	size_t print(const char *str);
-	void flush();
+	void flush() override;
 
 	// Services
 	BLEService *serialService;
@@ -52,12 +49,12 @@ public:
 	char txUuid[40] = NORDIC_TX_UUID;
 
 	// BLECharacteristicCallbacks
-	void onWrite(BLECharacteristic *pCharacteristic);
+	void onWrite(BLECharacteristic* pCharacteristic) override;
 
 	void setConnectCallback(BLE_CONNECT_CALLBACK callback);
 
-	bool isStarted(){return started;}
-
+	bool isStarted() const { return started;}
+	
 protected:
 	size_t transmitBufferLength;
 	bool bleConnected;

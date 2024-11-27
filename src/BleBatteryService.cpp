@@ -5,8 +5,6 @@
  * Avinab Malla
  * 13 October 2024
  */
-
-
 #include "BleBatteryService.h"
 #include "BleSerialServer.h"
 
@@ -32,12 +30,11 @@ void BleBatteryService::begin()
     started = true;
 }
 
-void BleBatteryService::reportBatteryPercent(uint8_t batPercent)
+void BleBatteryService::reportBatteryPercent(uint8_t batPercent) const
 {
     if (!started)
         return;
 
-        
 	batteryCharacteristic->setValue(&batPercent, 1);
 	batteryCharacteristic->notify();
 }

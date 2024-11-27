@@ -3,7 +3,6 @@
 #include <BLEDevice.h>
 #include <BLEUtils.h>
 #include <BLEServer.h>
-#include <BLE2902.h>
 
 #include "BleSerial.h"
 #include "BleBatteryService.h"
@@ -12,14 +11,12 @@
 
 #define BLE_BUFFER_SIZE ESP_GATT_MAX_ATTR_LEN // must be greater than MTU, less than ESP_GATT_MAX_ATTR_LEN
 
-
-
 class BleSerialServer : public BLEServerCallbacks
 {
 
 public:
-    void onConnect(BLEServer *pServer);
-    void onDisconnect(BLEServer *pServer);
+    void onConnect(BLEServer* pServer) override;
+    void onDisconnect(BLEServer* pServer) override;
 
     static BleSerialServer &getInstance()
     {
@@ -35,7 +32,7 @@ public:
 
     void startServer(const char *name, int led_pin = -1);
 
-    bool isConnected();
+    bool isConnected() const;
 
     BLEServer *Server = nullptr;
 

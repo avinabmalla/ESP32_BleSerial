@@ -8,14 +8,8 @@ uint16_t BleSerialServer::getMaxTransferSize()
 {
     if (maxTransferSize < MIN_MTU)
     {
-        int oldTransferSize = maxTransferSize;
         peerMTU = Server->getPeerMTU(Server->getConnId()) - 5;
         maxTransferSize = peerMTU > BLE_BUFFER_SIZE ? BLE_BUFFER_SIZE : peerMTU;
-
-        if (maxTransferSize != oldTransferSize)
-        {
-            log_i("Max BLE transfer size set to %u", maxTransferSize);
-        }
     }
 
     return maxTransferSize;
@@ -80,7 +74,7 @@ void BleSerialServer::startServer(const char *name, int led_pin)
     Server->setCallbacks(this);
 }
 
-bool BleSerialServer::isConnected()
+bool BleSerialServer::isConnected() const
 {
     return Server->getConnectedCount() > 0;
 }
