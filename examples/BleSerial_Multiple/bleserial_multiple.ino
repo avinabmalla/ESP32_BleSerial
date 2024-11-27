@@ -17,6 +17,7 @@
 #include <esp_attr.h>
 #include <esp_task_wdt.h>
 #include <driver/rtc_io.h>
+#include <esp_mac.h>
 
 const int BUFFER_SIZE = 8192;
 const int STACK_SIZE = 8192;
