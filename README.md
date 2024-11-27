@@ -12,6 +12,7 @@ Add the files in the src folder to your project, or install using the Arduino li
 ## Usage
 The following examples are provided:
 - BleSerial_Hello: Creates a BLE Serial and echoes "Hello!" every second.
+- BleSerial_Callback: Shows how to use the connect/disconnect callback.
 - BleSerial_Bridge: Creates a serial bridge between the ESP32 Serial port and Bluetooth LE.
 - BleSerial_Multiple: Creates multiple BLE Serial ports using a user provided service UUID. Echoes to both serial port every 2 seconds, and reads both BLE serial ports. Also includes a battery service.
 
