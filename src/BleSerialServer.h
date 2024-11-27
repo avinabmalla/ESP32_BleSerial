@@ -8,7 +8,7 @@
 #include "BleSerial.h"
 #include "BleBatteryService.h"
 
-#define MIN_MTU 50
+#define MIN_MTU 50 //Minimum required MTU for BLE Serial to work
 
 #define BLE_BUFFER_SIZE ESP_GATT_MAX_ATTR_LEN // must be greater than MTU, less than ESP_GATT_MAX_ATTR_LEN
 
@@ -38,10 +38,10 @@ public:
 
     bool isConnected();
 
-    BLEServer *Server;
+    BLEServer *Server = nullptr;
 
     uint16_t getMaxTransferSize();
-    
+
     void setConnectCallback(BLE_CONNECT_CALLBACK callback);
 
 private:
@@ -49,13 +49,13 @@ private:
     BleSerialServer(BleSerialServer const &other) = delete; // disable copy constructor
     void operator=(BleSerialServer const &other) = delete;  // disable assign constructor
 
-    BLEAdvertising *pAdvertising;
+    BLEAdvertising *pAdvertising = nullptr;
     BLE_CONNECT_CALLBACK connectCallback = nullptr;
 
-    bool bleConnected;
+    bool bleConnected = false;
 
-    uint16_t peerMTU;
-    uint16_t maxTransferSize = BLE_BUFFER_SIZE;
+    uint16_t peerMTU = 20;
+    uint16_t maxTransferSize = 20;
 
     bool enableLed = false;
     int ledPin = 13;

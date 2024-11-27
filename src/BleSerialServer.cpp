@@ -26,7 +26,7 @@ void BleSerialServer::onConnect(BLEServer *pServer)
     bleConnected = true;
     if (enableLed)
         digitalWrite(ledPin, HIGH);
-
+   
     if (connectCallback !=nullptr)
 	{
 		connectCallback(bleConnected);
@@ -38,6 +38,11 @@ void BleSerialServer::onDisconnect(BLEServer *pServer)
     bleConnected = false;
     if (enableLed)
         digitalWrite(ledPin, LOW);
+    
+    //Reset MTU
+    peerMTU = 20;
+	maxTransferSize = 20;
+
     Server->startAdvertising();
 
     if (connectCallback !=nullptr)
