@@ -176,3 +176,9 @@ void BleSerial::setupSerialService()
 BleSerial::BleSerial()
 {
 }
+
+
+void BleSerial::setConnectCallback(BLE_CONNECT_CALLBACK callback)
+{
+	BleSerialServer::getInstance().setConnectCallback(callback);
+}

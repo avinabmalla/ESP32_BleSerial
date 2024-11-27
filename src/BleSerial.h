@@ -52,6 +52,8 @@ public:
 	// BLECharacteristicCallbacks
 	void onWrite(BLECharacteristic *pCharacteristic);
 
+	void setConnectCallback(BLE_CONNECT_CALLBACK callback);
+
 protected:
 	size_t transmitBufferLength;
 	bool bleConnected;
