@@ -35,8 +35,8 @@ void BleBatteryService::reportBatteryPercent(uint8_t batPercent) const
     if (!started)
         return;
 
-	batteryCharacteristic->setValue(&batPercent, 1);
-	batteryCharacteristic->notify();
+    batteryCharacteristic->setValue(&batPercent, 1);
+    batteryCharacteristic->notify();
 }
 
 void BleBatteryService::end()
