@@ -76,7 +76,7 @@ private:
 	ByteRingBuffer<BLE_RX_BUFFER_SIZE> receiveBuffer;
 	size_t numAvailableLines = 0;
 
-	ByteRingBuffer<BLE_MAX_PACKET_SIZE> transmitBuffer;
+	ByteRingBuffer<BLE_MAX_PACKET_SIZE + 1> transmitBuffer;
 
 	void setupSerialService();
 	bool started = false;
