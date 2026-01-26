@@ -59,9 +59,11 @@ void BleBufferedSerial::begin(const char* name, const char* service_uuid, const 
 
 void BleBufferedSerial::end()
 {
+	started = false; // This stops the flush task
+	while (flushTaskRunning)
+		vTaskDelay(1); // Wait for the flush task to stop
 	serialService->executeDelete();
 	BleSerialServer::getInstance().unregisterSerial();
-	started = false;
 }
 
 bool BleBufferedSerial::connected()
@@ -227,7 +229,10 @@ void BleBufferedSerial::flush()
 void BleBufferedSerial::flushTaskEntry(void* pvParams)
 {
 	BleBufferedSerial* self = static_cast<BleBufferedSerial*>(pvParams);
+	self->flushTaskRunning = true;
 	self->flushTask();
+	self->flushTaskRunning = false;
+	vTaskDelete(NULL);
 }
 
 void BleBufferedSerial::flushTask()

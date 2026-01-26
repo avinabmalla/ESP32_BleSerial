@@ -44,7 +44,7 @@ void BleBatteryService::reportBatteryPercent(uint8_t batPercent) const
 
 void BleBatteryService::end()
 {
+    batteryService->executeDelete();
     BleSerialServer::getInstance().unregisterBatteryService();
     started = false;
-    batteryService->executeDelete();
 }
